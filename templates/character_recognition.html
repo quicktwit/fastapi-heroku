@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Character Recognition{% endblock %}
+
+{% block content %}
+    <div style="text-align:center">
+        <h1>Character Recognition</h1>
+    </div>
+    <div style="text-align:center">
+        <h3>Currently only supports png, jpg, jpeg, pdf files</h3>
+        <h3>Sometimes, it does not support layout</h3>
+        <form method="POST" action="/character-recognition" enctype="multipart/form-data">
+            <select name="recognition_type" id="select">
+                <option value="license_plate">License Plate</option>
+                <option value="receipt">Receipt</option>
+                <option value="manga_symbols">Manga</option>
+                <option value="random_text">Random text</option>
+            </select>
+            <br><br>
+            <input type="file" name="file" id="file">
+            <br><br>
+            <input type="submit" value="Recognize me">
+        </form>
+    </div>
+
+{% endblock %}
