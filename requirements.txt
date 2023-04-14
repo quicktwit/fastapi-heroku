@@ -1,6 +1,5 @@
 fastapi
 uvicorn
 jinja2
-git+ssh://git@github.com:quicktwit/PaddleOCR.git@v2.6.0
 paddlepaddle
 paddleocr
