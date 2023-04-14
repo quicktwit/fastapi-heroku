@@ -57,22 +57,14 @@ async def recognize_image(request: Request, file: UploadFile):
     print(f"result_image_url: {result_image_url}")
     result_json_url = request.url_for('static', path='result.json')
     print(f"result_json_url: {result_json_url}")
-    # return_data = {
-    #     "result_image_path": result_path,
-    #     "result_image_url": result_image_url,
-    #     "result_json_path": result_json_path,
-    #     "result_json_url": result_json_url,
-    # }
-    # return JSONResponse(content=return_data)
     return "Done"
-    # return {"result_link": "/result.jpg", "result_json": "/result.json"}
+
   
 @app.route("/delete-static")
 async def delete_static(request: Request):
     try:
         # remove all files inside the static folder
         for filename in os.listdir("./static"):
-            print(f"filename=====================: {filename}")
             file_path = os.path.join("./static", filename)
             if os.path.isfile(file_path):
                 os.remove(file_path)
