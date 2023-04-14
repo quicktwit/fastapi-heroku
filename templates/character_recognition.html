@@ -3,24 +3,95 @@
 {% block title %}Character Recognition{% endblock %}
 
 {% block content %}
+
     <div style="text-align:center">
         <h1>Character Recognition</h1>
     </div>
     <div style="text-align:center">
         <h3>Currently only supports png, jpg, jpeg, pdf files</h3>
         <h3>Sometimes, it does not support layout</h3>
-        <form method="POST" action="/character-recognition" enctype="multipart/form-data">
-            <select name="recognition_type" id="select">
-                <option value="license_plate">License Plate</option>
-                <option value="receipt">Receipt</option>
-                <option value="manga_symbols">Manga</option>
-                <option value="random_text">Random text</option>
-            </select>
+        <form id="image-form" method="POST" action="/character-recognition" enctype="multipart/form-data">
+            <label for="recognition_type">Recognition Type:</label>
+            <label for="file">File:</label>
+            <input type="file" name="file" id="file" accept=".png,.jpg,.jpeg,.pdf" required>
             <br><br>
-            <input type="file" name="file" id="file">
+            <label for="page_count">Page Count (PDF only):</label>
+            <input type="number" name="page_count" id="page_count" min="1" max="10">
             <br><br>
-            <input type="submit" value="Recognize me">
+            <input type="submit" value="Recognize me" id="submit-button">
         </form>
+        <p id="processing-msg" style="display:none">Processing...</p>
+        <div id="result-container" style="display:none">
+            <p>Results:</p>
+            <img id="result-image" src="" style="max-width: 100%; max-height: 400px;">
+            <br><br>
+            <a href="./static/result.json" target="_blank" charset="utf-8">View JSON Output</a>
+            
+            <br><br>
+            <button onclick="refreshPage()" id="finished-button" disabled>Finished Checking</button>
+            <p>Note: If you click this or refresh page, your data will be lost</p>
+        </div>
     </div>
 
+    {% if error %}
+        <div style="text-align:center; color:red;">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    <script>
+        function disableButton() {
+            document.getElementById("submit-button").disabled = true;
+            document.getElementById("processing-msg").style.display = "block";
+            document.getElementById("result-container").style.display = "none";
+        }
+
+        function enableButton() {
+            document.getElementById("submit-button").disabled = false;
+            document.getElementById("processing-msg").style.display = "none";
+            document.getElementById("result-container").style.display = "block";
+        }
+
+        function uploadImage() {
+            var form = document.getElementById("image-form");
+            var formData = new FormData(form);
+            disableButton();
+            fetch("/character-recognition", {
+                method: "POST",
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById("result-image").src = data.image_url;
+                    enableButton();
+                    document.getElementById("result-image").src = "./static/result.jpg";
+                    document.getElementById("submit-button").disabled = true;
+                    document.getElementById("finished-button").disabled = false;
+                }
+            })
+            .catch(error => {
+                alert(error);
+            });
+        }
+
+        function refreshPage() {
+            fetch('/delete-static').then(() => {
+                window.location.href = '/character-recognition';
+            });
+        }
+
+        window.addEventListener('beforeunload', function() {
+            fetch('/delete-static');
+        });
+
+        const form = document.getElementById('image-form');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            uploadImage();
+        });
+    </script>
+    
 {% endblock %}

@@ -1,1 +1,6 @@
 __pycache__/
+paddleocr/
+static/*
+examples/
+maint.py
+test.py
