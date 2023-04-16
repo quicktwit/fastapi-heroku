@@ -8,15 +8,12 @@
         <h1>Character Recognition</h1>
     </div>
     <div style="text-align:center">
-        <h3>Currently only supports png, jpg, jpeg, pdf files</h3>
+        <h3>Currently only supports png, jpg, jpeg files</h3>
         <h3>Sometimes, it does not support layout</h3>
         <form id="image-form" method="POST" action="/character-recognition" enctype="multipart/form-data">
             <label for="recognition_type">Recognition Type:</label>
             <label for="file">File:</label>
-            <input type="file" name="file" id="file" accept=".png,.jpg,.jpeg,.pdf" required>
-            <br><br>
-            <label for="page_count">Page Count (PDF only):</label>
-            <input type="number" name="page_count" id="page_count" min="1" max="10">
+            <input type="file" name="file" id="file" accept=".png,.jpg,.jpeg" required>
             <br><br>
             <input type="submit" value="Recognize me" id="submit-button">
         </form>

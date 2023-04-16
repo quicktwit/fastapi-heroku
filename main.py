@@ -8,7 +8,6 @@ import os
 import json
 import shutil
 import numpy as np
-from urllib.parse import urlparse, urlunparse
 
 
 app = FastAPI()
@@ -78,9 +77,9 @@ async def delete_static(request: Request):
 async def read_translate(request: Request):
     return templates.TemplateResponse("translate.html", {"request": request})
 
-@app.get("/daily-news", response_class=HTMLResponse)
-async def read_daily_news(request: Request):
-    return templates.TemplateResponse("daily_news.html", {"request": request})
+@app.get("/super-resolution", response_class=HTMLResponse)
+async def super_resolution(request: Request):
+    return templates.TemplateResponse("super_resolution.html", {"request": request})
 
 @app.get("/detection", response_class=HTMLResponse)
 async def read_detection(request: Request):
