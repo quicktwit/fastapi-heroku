@@ -1,5 +1,5 @@
 fastapi
 uvicorn
 jinja2
-paddlepaddle==2.4.2
+paddlepaddle==2.6.0
 paddleocr==2.6.1.3
